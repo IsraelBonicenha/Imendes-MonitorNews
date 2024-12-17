@@ -142,8 +142,19 @@ def monitorar():
         data_dict = carregar_dados(arqvo_data)
         if not data_dict:
             for chave in urls:
-                warnings.simplefilter("ignore", InsecureRequestWarning)
-                resposta = requests.get(urls[chave], verify=False)
+
+                tentativas = 4
+                for tentativa in range(tentativas):
+                    try:
+                        warnings.simplefilter("ignore", InsecureRequestWarning)
+                        resposta = requests.get(urls[chave], verify=False)
+                        break
+                    except Exception as excecao:
+                        print(f"Tentativa {tentativa + 1} requisição falhou...")
+                        time.sleep(5)
+                        if tentativa == tentativas:
+                            raise
+
                 if resposta.status_code == 200:
                     html_page = resposta.text
                     numero_atual = html_page.count("</tr>") - 1  # -1 por causa do cabeçalho
@@ -207,7 +218,7 @@ def monitorar():
 if __name__ == "__main__":
 
     
-    versao_atual = "1.0.0"
+    versao_atual = "1.0.1"
     verificar_nova_versao(versao_atual)
 
     try:
