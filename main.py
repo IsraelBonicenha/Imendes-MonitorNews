@@ -112,7 +112,14 @@ def verificar_nova_versao(versao_atual):
         else:
             print("Inciando o donwload das atualiações...")
             time.sleep(1.5)
-            os.startfile("C:\\MonitorNews\\Update - MonitorNews.exe")
+
+            # Alterando o nome do atualizar de "Update - MonitorNews" para "MonitorNewsUpdate" - Issso padroniza todas as versões
+            # OBS: Vou manter esse código  de padronização até a versão 1.3.0.
+
+            os.rename("Update - MonitorNews.exe", "MonitorNewsUpdate.exe")
+
+            # Starta o arquivo correto dessa vez.
+            os.startfile("C:\\MonitorNews\\MonitorNewsUpdate.exe")
             sys.exit()
 
     except requests.exceptions.RequestException as e:
@@ -218,7 +225,7 @@ def monitorar():
 if __name__ == "__main__":
 
     
-    versao_atual = "1.0.1"
+    versao_atual = "1.0.2"
     verificar_nova_versao(versao_atual)
 
     try:
